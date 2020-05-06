@@ -12,6 +12,7 @@ import os
 from integrated_loss import expectation_loss
 import torch.optim as optim
 import time
+import json
 
 class Model_Trainer():
     
@@ -101,7 +102,8 @@ class Model_Trainer():
             print('Epoch {} test kl loss mean (std): {} ({})'.format(i, test_kl_history.mean(), test_kl_history.std()))
             
             self.test_rec_histories[i] = test_rec_history
-            self.test_rec_histories[i] = test_rec_history
+            self.test_kl_histories[i] = test_kl_history
+        self.save()
         
     def test_on_set(self, test_set):
         ### change!
@@ -148,7 +150,7 @@ class Model_Trainer():
             np.savetxt(self.p.save_path + 'epoch_{}_test_kl_losses'.format(i), self.test_kl_histories[i])
             
         #3 save parameters
-        self.p.save()
+        self.p.save(self.p.save_path + 'params.json')
         
         
         
@@ -166,7 +168,7 @@ class Parameters():
     def __init__(self, path='./', lr=1e-4, optimizer=optim.Adam, loss=expectation_loss, 
                  epochs=2, kl_rec_ratio=0.12, reduction_per_epoch=0.1, epochs_per_step=2):
         
-        self.id = 'asdf' ##
+        self.id = 'id_' + str(round(time.time())) ##
         self.path = path
         if not os.path.exists(self.path):
             os.mkdir(self.path)        
@@ -188,9 +190,14 @@ class Parameters():
         self.epochs_per_step = epochs_per_step
         
     
-    def save(self, filename):
+    def save(self, path):
         #print an overview of all parameters
-        pass
+        save_dict = {}
+        for n in dir(self):
+            if not n[0] == '_':
+                save_dict[n] = str(getattr(self, n))
+        with open(path,'w') as f:
+            json.dump(save_dict, f)
     
     
     
