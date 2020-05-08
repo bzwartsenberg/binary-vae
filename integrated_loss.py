@@ -104,6 +104,12 @@ def expectation_loss(x,logit_q,logit_q_prior,logit_p_x_given_b, kl_rec_ratio, f=
     total_rec_loss = torch.zeros(logit_q.shape[0]) 
     total_weight = torch.zeros(logit_q.shape[0])
 
+    if torch.cuda.is_available():
+        binary_vecs = binary_vecs.cuda()
+        total_kl_loss = total_kl_loss.cuda()
+        total_rec_loss = total_rec_loss.cuda()
+        total_weight = total_weight.cuda()
+
     #first, need to get all the logit_p's for binary vecs. Therefore, need all binary vecs in 
     #dim[0], as (num_binary_vecs, num_binaries)
     logit_p = logit_p_x_given_b(binary_vecs.squeeze())

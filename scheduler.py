@@ -130,7 +130,7 @@ def train_on_table(table_path, working_path):
         df.loc[index, 'final_rec_test_loss'] = trainer.test_rec_histories[last_epoch].mean()
         df.loc[index, 'final_kl_test_loss'] = trainer.test_kl_histories[last_epoch].mean()
         #save dataframe:
-        df.to_csv(table_path)
+        df.to_csv(table_path, index=False)
     
     
 if __name__ == "__main__":

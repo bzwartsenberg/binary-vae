@@ -55,6 +55,10 @@ class Model_Trainer():
             for j,data in enumerate(self.train_data):
                 images,labels = data
                 batch_X = images.reshape((-1,28*28))
+                
+                if torch.cuda.is_available():
+                    batch_X = batch_X.cuda()                
+                
                 self.optimizer.zero_grad()
 
                 logit_q = self.model.encode(batch_X, return_logits=True)
@@ -114,6 +118,9 @@ class Model_Trainer():
                 images,labels = data
                 batch_X = images.reshape((-1,28*28))
     
+                if torch.cuda.is_available():
+                    batch_X = batch_X.cuda()                
+
                 logit_q = self.model.encode(batch_X, return_logits=True)
                 q = torch.sigmoid(logit_q)
         

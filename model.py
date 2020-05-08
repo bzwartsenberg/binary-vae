@@ -27,6 +27,11 @@ class VAE_discrete(nn.Module):
 
         #note: can make this be a trainable parameter as well
         self.logit_q_prior = torch.zeros((1,self.num_bernoullis))
+        
+        if torch.cuda.is_available():
+            self.logit_q_prior = self.logit_q_prior.cuda()
+            self.cuda()
+        
         self.q_prior = torch.sigmoid(self.logit_q_prior)
 
     def encode(self, x, return_logits=True):
