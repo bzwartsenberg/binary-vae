@@ -1,1 +1,1 @@
-VAE with Bernoulli latent variables, trained with multiple loss functions
+VAE with Bernoulli latent variables, to be trained with multiple loss functions. Implemented using PyTorch.
