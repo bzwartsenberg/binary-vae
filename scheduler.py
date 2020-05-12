@@ -101,9 +101,9 @@ def train_on_table(table_path, working_path):
 
         # create training loader:
         trainloader = torch.utils.data.DataLoader(trainset, batch_size=p_dict['batch_size'],
-                                                    shuffle=True, num_workers=1)
+                                                    shuffle=True, num_workers=0)
         testloader = torch.utils.data.DataLoader(testset, batch_size=p_dict['batch_size'],
-                                                    shuffle=False, num_workers=1)
+                                                    shuffle=False, num_workers=0)
         
         #model:
         model = VAE_discrete(input_size=28*28, hidden_size=p_dict['hidden_size'], num_bernoullis=p_dict['num_bernoullis'])
